@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity() {
     }
     private fun getSMS(){
         val inboxURI = Uri.parse("content://sms/inbox")
-        val reqCols = arrayOf("_id", "address", "body")
+        val reqCols = arrayOf(Telephony.Sms.Inbox._ID, Telephony.Sms.Inbox.ADDRESS, Telephony.Sms.Inbox.BODY, Telephony.Sms.Inbox.DATE)
         val cr = contentResolver
         val c = cr.query(inboxURI, reqCols, null, null, null)
         if (c != null) {
@@ -62,13 +62,14 @@ class MainActivity : AppCompatActivity() {
                 if (c.moveToFirst()) {
                     val senderColumnIndex = c.getColumnIndexOrThrow(Telephony.Sms.Inbox.ADDRESS)
                     val messageColumnIndex = c.getColumnIndexOrThrow(Telephony.Sms.Inbox.BODY)
-
+                    val dateColumnIndex = c.getColumnIndexOrThrow(Telephony.Sms.Inbox.DATE)
                     do {
                         val sender = c.getString(senderColumnIndex)
                         val message = c.getString(messageColumnIndex)
+                        val date = c.getString(dateColumnIndex)
 
                         // Log the message details
-                        Log.d("SmsReader", "Sender: $sender, Message: $message")
+                        Log.d("SmsReader", "Sender: $sender, Message: $message, Date: $date")
                     } while (c.moveToNext())
                 }
             } finally {
