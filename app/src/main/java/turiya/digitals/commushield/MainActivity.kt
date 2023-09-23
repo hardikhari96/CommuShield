@@ -29,6 +29,30 @@ class MainActivity : AppCompatActivity() {
             )
         }
 
+        getSMS()
+    }
+
+    private fun findUnAskedPermissions(wanted: ArrayList<String>): ArrayList<String> {
+        val result = ArrayList<String>()
+        for (perm in wanted) {
+            if (!hasPermission(perm)) {
+                result.add(perm)
+            }
+        }
+        return result
+    }
+    private fun hasPermission(permission: String): Boolean {
+        if (canMakeSmores()) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                return checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED
+            }
+        }
+        return true
+    }
+    private fun canMakeSmores(): Boolean {
+        return Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1
+    }
+    private fun getSMS(){
         val inboxURI = Uri.parse("content://sms/inbox")
         val reqCols = arrayOf("_id", "address", "body")
         val cr = contentResolver
@@ -52,26 +76,4 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
-    private fun findUnAskedPermissions(wanted: ArrayList<String>): ArrayList<String> {
-        val result = ArrayList<String>()
-        for (perm in wanted) {
-            if (!hasPermission(perm)) {
-                result.add(perm)
-            }
-        }
-        return result
-    }
-    private fun hasPermission(permission: String): Boolean {
-        if (canMakeSmores()) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                return checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED
-            }
-        }
-        return true
-    }
-    private fun canMakeSmores(): Boolean {
-        return Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1
-    }
-
 }
