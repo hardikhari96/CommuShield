@@ -20,7 +20,7 @@ These instructions will help you get started with CommuShield on your device.
 
 ### Prerequisites
 
-- Android device running [Android OS version] or later.
+- Android device running Android OS version 5 or later.
 
 ### Installation
 
