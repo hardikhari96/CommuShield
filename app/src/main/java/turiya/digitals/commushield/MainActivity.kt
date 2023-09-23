@@ -22,10 +22,12 @@ class MainActivity : AppCompatActivity() {
         permissions.add(READ_SMS)
         permissions.add(READ_CALL_LOG)
         permissionsToRequest = findUnAskedPermissions(permissions)
-//        requestPermissions(
-//            (permissionsToRequest.toTypedArray<String?>())!!,
-//            ALL_PERMISSIONS_RESULT
-//        )
+        if(permissionsToRequest.size  != 0){
+            requestPermissions(
+                (permissionsToRequest.toTypedArray<String?>())!!,
+                ALL_PERMISSIONS_RESULT
+            )
+        }
 
         val inboxURI = Uri.parse("content://sms/inbox")
         val reqCols = arrayOf("_id", "address", "body")
