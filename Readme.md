@@ -1,4 +1,4 @@
-# CommuShield
+# CommuShield (In Development Stage)
 
 CommuShield is a powerful communication management and security app designed to help you take control of your SMS messages and call history. Whether you're concerned about privacy or simply want a better way to organize and protect your communication, CommuShield has you covered.
 
