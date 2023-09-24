@@ -2,6 +2,7 @@ package turiya.digitals.commushield
 
 import android.Manifest.permission.READ_CALL_LOG
 import android.Manifest.permission.READ_SMS
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
@@ -11,6 +12,7 @@ import android.provider.Telephony
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import turiya.digitals.commushield.sms.smsService
 import java.util.*
 
 
@@ -18,12 +20,11 @@ class MainActivity : AppCompatActivity() {
     private val permissions =  ArrayList<String>()
     private var permissionsToRequest = ArrayList<String>()
     private val ALL_PERMISSIONS_RESULT = 107
-
+    var allPermissionsGranted = true
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         Log.e("error_one ","Test")
         permissions.add(READ_SMS)
         permissions.add(READ_CALL_LOG)
@@ -34,9 +35,9 @@ class MainActivity : AppCompatActivity() {
                 ALL_PERMISSIONS_RESULT
             )
         }
-
-        getSMS()
-        getCallLogs()
+        startService(Intent(this, smsService::class.java))
+//        getSMS()
+//        getCallLogs()
     }
 
     private fun findUnAskedPermissions(wanted: ArrayList<String>): ArrayList<String> {
