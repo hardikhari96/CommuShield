@@ -6,6 +6,7 @@ import android.content.Intent
 import android.provider.Telephony
 import android.util.Log
 
+// working fine
 class SmsReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         if (Telephony.Sms.Intents.SMS_RECEIVED_ACTION == intent.action) {
