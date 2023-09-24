@@ -43,7 +43,6 @@ class MainActivity : AppCompatActivity() {
 //        getSMS()
 //        getCallLogs()
     }
-
     private fun findUnAskedPermissions(wanted: ArrayList<String>): ArrayList<String> {
         val result = ArrayList<String>()
         for (perm in wanted) {

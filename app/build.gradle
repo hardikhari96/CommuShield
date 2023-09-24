@@ -30,7 +30,7 @@ android {
         jvmTarget = '1.8'
     }
 }
-def room_version = "2.5.2"
+def room_version = "2.4.2"
 dependencies {
 
     implementation 'androidx.core:core-ktx:1.7.0'
