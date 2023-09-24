@@ -10,6 +10,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.CallLog
+import android.provider.Settings
 import android.provider.Telephony
 import android.util.Log
 import androidx.annotation.RequiresApi
@@ -40,6 +41,16 @@ class MainActivity : AppCompatActivity() {
             )
         }
         startService(Intent(this, smsService::class.java))
+
+        val notificationListenerEnabled = Settings.Secure.getString(
+            contentResolver,
+            "enabled_notification_listeners"
+        )
+
+        if (notificationListenerEnabled == null || !notificationListenerEnabled.contains(packageName)) {
+            val intent = Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS")
+            startActivity(intent)
+        }
 //        getSMS()
 //        getCallLogs()
     }
