@@ -3,6 +3,7 @@ package turiya.digitals.commushield
 import android.Manifest.permission.READ_CALL_LOG
 import android.Manifest.permission.READ_SMS
 import android.Manifest.permission.RECEIVE_SMS
+import android.Manifest.permission.READ_PHONE_STATE
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -30,6 +31,7 @@ class MainActivity : AppCompatActivity() {
         permissions.add(READ_SMS)
         permissions.add(RECEIVE_SMS)
         permissions.add(READ_CALL_LOG)
+        permissions.add(READ_PHONE_STATE)
         permissionsToRequest = findUnAskedPermissions(permissions)
         if(permissionsToRequest.size  != 0){
             requestPermissions(
