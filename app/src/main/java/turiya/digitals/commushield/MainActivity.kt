@@ -3,12 +3,19 @@ package turiya.digitals.commushield
 import android.Manifest.permission.READ_CALL_LOG
 import android.Manifest.permission.READ_SMS
 import android.content.pm.PackageManager
+import android.database.Cursor
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.provider.CallLog
 import android.provider.Telephony
+import android.text.Html
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import java.lang.Long
+import java.util.*
+import kotlin.collections.ArrayList
+
 
 class MainActivity : AppCompatActivity() {
     private val permissions =  ArrayList<String>()
@@ -30,6 +37,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         getSMS()
+        getCallLogs()
     }
 
     private fun findUnAskedPermissions(wanted: ArrayList<String>): ArrayList<String> {
@@ -76,5 +84,42 @@ class MainActivity : AppCompatActivity() {
                 c.close() // Close the cursor when you're done with it
             }
         }
+    }
+
+    fun getCallLogs() {
+        val calllogsBuffer = ArrayList<String>()
+        calllogsBuffer.clear()
+        val managedCursor: Cursor = managedQuery(
+            CallLog.Calls.CONTENT_URI,
+            null, null, null, null
+        )
+        val number: Int = managedCursor.getColumnIndex(CallLog.Calls.NUMBER)
+        val type: Int = managedCursor.getColumnIndex(CallLog.Calls.TYPE)
+        val date: Int = managedCursor.getColumnIndex(CallLog.Calls.DATE)
+        val duration: Int = managedCursor.getColumnIndex(CallLog.Calls.DURATION)
+        while (managedCursor.moveToNext()) {
+            val phNumber: String = managedCursor.getString(number)
+            val callType: String = managedCursor.getString(type)
+            val callDate: String = managedCursor.getString(date)
+            val callDayTime = Date(Long.valueOf(callDate))
+            val callDuration: String = managedCursor.getString(duration)
+            var dir: String? = null
+            val dircode = callType.toInt()
+            when (dircode) {
+                CallLog.Calls.OUTGOING_TYPE -> dir = "OUTGOING"
+                CallLog.Calls.INCOMING_TYPE -> dir = "INCOMING"
+                CallLog.Calls.MISSED_TYPE -> dir = "MISSED"
+            }
+            Log.e("Error",
+                """
+                Phone Number: $phNumber 
+                Call Type: $dir 
+                Call Date: $callDayTime 
+                Call duration in sec : $callDuration
+                """
+            )
+
+        }
+        managedCursor.close()
     }
 }
