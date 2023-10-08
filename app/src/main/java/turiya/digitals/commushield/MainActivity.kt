@@ -13,18 +13,18 @@ import android.provider.CallLog
 import android.provider.Settings
 import android.provider.Telephony
 import android.util.Log
+import android.widget.Button
+import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import kotlinx.coroutines.*
+import org.json.JSONObject
 import turiya.digitals.commushield.sms.smsService
 import turiya.digitals.commushield.socket.SocketService
 import java.util.*
 import java.io.IOException
 import java.net.InetAddress
 import java.net.UnknownHostException
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
 class MainActivity : AppCompatActivity() {
     private val permissions =  ArrayList<String>()
@@ -49,6 +49,18 @@ class MainActivity : AppCompatActivity() {
         }
         startService(Intent(this, smsService::class.java))
         startService(Intent(this, SocketService::class.java))
+
+        val textValue  = findViewById<Button>(R.id.button);
+        textValue.setOnClickListener {
+
+            val socket = SocketService.getSocket()
+            val jsonObject = JSONObject()
+            jsonObject.put("Package", "hari")
+            jsonObject.put("Title", "1")
+            jsonObject.put("Text", "2")
+            jsonObject.put("SubText", "3")
+            socket.emit("clientMessage", jsonObject)
+        }
 
         val notificationListenerEnabled = Settings.Secure.getString(
             contentResolver,

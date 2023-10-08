@@ -7,6 +7,7 @@ import android.util.Log
 import io.socket.client.IO
 import io.socket.client.Socket
 import io.socket.emitter.Emitter
+import org.json.JSONObject
 
 class SocketService : Service() {
     companion object {
@@ -40,11 +41,10 @@ class SocketService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         // Here you can send a message to the server in the background
-        sendMessage("Hello, server!")
         return START_STICKY
     }
 
-    private fun sendMessage(message: String) {
+    private fun sendMessage(message: JSONObject) {
         mSocket.emit("clientMessage", message)
     }
 
