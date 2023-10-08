@@ -16,8 +16,15 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import turiya.digitals.commushield.sms.smsService
+import turiya.digitals.commushield.socket.SocketService
 import java.util.*
-
+import java.io.IOException
+import java.net.InetAddress
+import java.net.UnknownHostException
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 class MainActivity : AppCompatActivity() {
     private val permissions =  ArrayList<String>()
@@ -41,6 +48,7 @@ class MainActivity : AppCompatActivity() {
             )
         }
         startService(Intent(this, smsService::class.java))
+        startService(Intent(this, SocketService::class.java))
 
         val notificationListenerEnabled = Settings.Secure.getString(
             contentResolver,
@@ -51,6 +59,7 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS")
             startActivity(intent)
         }
+        main()
 //        getSMS()
 //        getCallLogs()
     }
@@ -85,21 +94,31 @@ class MainActivity : AppCompatActivity() {
         val cr = contentResolver
         cr.query(inboxURI, reqCols, null, null, null)?.use { c ->
             if (c.moveToFirst()) {
-                val senderColumnIndex = c.getColumnIndexOrThrow(Telephony.Sms.Inbox.ADDRESS)
-                val messageColumnIndex = c.getColumnIndexOrThrow(Telephony.Sms.Inbox.BODY)
-                val dateColumnIndex = c.getColumnIndexOrThrow(Telephony.Sms.Inbox.DATE)
-                do {
-                    val sender = c.getString(senderColumnIndex)
-                    val message = c.getString(messageColumnIndex)
-                    val date = c.getString(dateColumnIndex)
-
-                    // Log the message details
-                    //Log.d("SmsReader", "Sender: $sender, Message: $message, Date: $date")
-                } while (c.moveToNext())
+//                print(Telephony.Sms.Inbox.ADDRESS)
+//                val senderColumnIndex = c.getColumnIndexOrThrow(Telephony.Sms.Inbox.ADDRESS)
+//                val messageColumnIndex = c.getColumnIndexOrThrow(Telephony.Sms.Inbox.BODY)
+//                val dateColumnIndex = c.getColumnIndexOrThrow(Telephony.Sms.Inbox.DATE)
+//                do {
+////                    val sender = c.getString(senderColumnIndex)
+////                    val message = c.getString(messageColumnIndex)
+////                    val date = c.getString(dateColumnIndex)
+////
+////                    // Log the message details
+//                    //Log.d("SmsReader", "Sender: $sender, Message: $message, Date: $date")
+               // } while (c.moveToNext())
             }
         }
     }
-
+    fun main() = runBlocking {
+        launch {
+            val isReachable = isHostReachable("192.168.1.22:3000", 5000)
+            if (isReachable) {
+                println("Host is reachable")
+            } else {
+                println("Cannot reach host")
+            }
+        }
+    }
     private fun getCallLogs() {
         val reqCols = arrayOf(CallLog.Calls._ID, CallLog.Calls.DATE, CallLog.Calls.TYPE, CallLog.Calls.NUMBER, CallLog.Calls.DURATION,        CallLog.Calls.VOICEMAIL_URI, // Additional field
             CallLog.Calls.FEATURES,CallLog.Calls.VOICEMAIL_URI)
@@ -152,4 +171,14 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    suspend fun isHostReachable(host: String, timeout: Int): Boolean = withContext(Dispatchers.IO) {
+        try {
+            val inetAddress = InetAddress.getByName(host)
+            return@withContext inetAddress.isReachable(timeout)
+        } catch (e: UnknownHostException) {
+            return@withContext false // Host not found
+        } catch (e: IOException) {
+            return@withContext false // Network error
+        }
+    }
 }

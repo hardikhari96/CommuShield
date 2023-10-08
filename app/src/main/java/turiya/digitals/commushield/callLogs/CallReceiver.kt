@@ -14,7 +14,6 @@ class CallReceiver : BroadcastReceiver() {
         when (state) {
             TelephonyManager.EXTRA_STATE_RINGING -> {
                 if(incomingNumber != null) Log.d("CallReceiver", "Incoming call from: $incomingNumber")
-                // Handle incoming call
             }
             TelephonyManager.EXTRA_STATE_OFFHOOK -> {
                 Log.d("CallReceiver", "Call answered")

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "422204018090",
+    "project_id": "commushild-884da",
+    "storage_bucket": "commushild-884da.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:422204018090:android:2afb4bad982b8dd84cafd3",
+        "android_client_info": {
+          "package_name": "turiya.digitals.commushield"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAzABIAM94XLLBeir8wx_ZhEFl7JRf51ck"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:422204018090:android:110317d04daac8cb4cafd3",
+        "android_client_info": {
+          "package_name": "turiya.digitals.commushild"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAzABIAM94XLLBeir8wx_ZhEFl7JRf51ck"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
