@@ -27,7 +27,7 @@ class SocketService : Service() {
         val opts = IO.Options()
         opts.timeout = 10000 // 10 seconds
         opts.reconnection = true
-        mSocket = IO.socket("http://192.168.1.22:3000",opts) // Replace with your server URL
+        mSocket = IO.socket("https://covishield-turiyadigitals-2ba6c08eb6e2.herokuapp.com",opts) // Replace with your server URL
         mSocket.on(Socket.EVENT_CONNECT) {
             Log.d("SocketIO", "Connected")
         }.on(Socket.EVENT_DISCONNECT) {
